@@ -1,0 +1,134 @@
+{
+  "name": "agent-planner",
+  "displayName": "Agent Planner",
+  "description": "Plan-confirm-run workflow for coding agents (starting with Cursor).",
+  "version": "0.0.1",
+  "publisher": "your-publisher",
+  "engines": {
+    "vscode": ">=1.70.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:agent-planner.createPlan",
+    "onCommand:agent-planner.saveEditedPlan",
+    "onCommand:agent-planner.runPlan",
+    "onCommand:agent-planner.setLlmApiKey",
+    "onCommand:agent-planner.configureLlm"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "agent-planner.createPlan",
+        "title": "Agent Planner: Create Plan"
+      },
+      {
+        "command": "agent-planner.saveEditedPlan",
+        "title": "Agent Planner: Save Edited Plan"
+      },
+      {
+        "command": "agent-planner.runPlan",
+        "title": "Agent Planner: Run Plan"
+      },
+      {
+        "command": "agent-planner.setLlmApiKey",
+        "title": "Agent Planner: Set LLM API Key"
+      },
+      {
+        "command": "agent-planner.configureLlm",
+        "title": "Agent Planner: Quick Configure LLM"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Agent Planner",
+      "properties": {
+        "agentPlanner.planning.mode": {
+          "type": "string",
+          "enum": [
+            "local",
+            "llm"
+          ],
+          "default": "local",
+          "description": "How to generate plans: local heuristic or LLM."
+        },
+        "agentPlanner.llm.baseUrl": {
+          "type": "string",
+          "default": "https://api.openai.com",
+          "description": "Base URL for OpenAI-compatible API (no trailing slash)."
+        },
+        "agentPlanner.llm.provider": {
+          "type": "string",
+          "enum": [
+            "openai",
+            "azure"
+          ],
+          "default": "openai",
+          "description": "LLM API provider. Use 'azure' for Azure OpenAI Service."
+        },
+        "agentPlanner.llm.model": {
+          "type": "string",
+          "default": "gpt-4o-mini",
+          "description": "Model ID for OpenAI-compatible API."
+        },
+        "agentPlanner.llm.temperature": {
+          "type": "number",
+          "default": 0.2,
+          "description": "Sampling temperature for LLM planner."
+        },
+        "agentPlanner.llm.timeoutMs": {
+          "type": "number",
+          "default": 60000,
+          "description": "Timeout in milliseconds for LLM planner requests."
+        },
+        "agentPlanner.azure.deployment": {
+          "type": "string",
+          "default": "",
+          "description": "Azure OpenAI deployment name (e.g., gpt-4o-mini)."
+        },
+        "agentPlanner.azure.apiVersion": {
+          "type": "string",
+          "default": "2024-08-01-preview",
+          "description": "Azure OpenAI API version."
+        },
+        "agentPlanner.agent": {
+          "type": "string",
+          "enum": [
+            "cursor"
+          ],
+          "default": "cursor",
+          "description": "Selected coding agent to run plans with."
+        },
+        "agentPlanner.cursor.path": {
+          "type": "string",
+          "default": "",
+          "description": "Optional absolute path to Cursor executable (if not on PATH)."
+        },
+        "agentPlanner.cursor.argsTemplate": {
+          "type": "string",
+          "default": "-r {planFile}",
+          "description": "Template for Cursor CLI args. Placeholders: {workspace}, {planFile}. Use -r to reuse current window."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -w -p .",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.90.0",
+    "typescript": "^5.4.0",
+    "vsce": "^2.15.0"
+  }
+}
+
+
